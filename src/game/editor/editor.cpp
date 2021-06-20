@@ -2862,6 +2862,7 @@ void CEditor::RenderImages(CUIRect ToolBox, CUIRect ToolBar, CUIRect View)
 	static float s_ScrollValue = 0;
 	float ImagesHeight = 30.0f + 14.0f * m_Map.m_lImages.size() + 27.0f;
 	float ScrollDifference = ImagesHeight - ToolBox.h;
+	float ToolBoxHeight = ToolBox.h;
 
 	if(ImagesHeight > ToolBox.h)	// Do we even need a scrollbar?
 	{
@@ -2889,22 +2890,24 @@ void CEditor::RenderImages(CUIRect ToolBox, CUIRect ToolBar, CUIRect View)
 		ImageStartAt = 0.0f;
 
 	float ImageCur = 0.0f;
+	float CurrentY = 0.0f;
 
 	for(int e = 0; e < 2; e++) // two passes, first embedded, then external
 	{
 		CUIRect Slot;
 
-		if(ImageCur >= ToolBox.h)
+		if(CurrentY >= ToolBoxHeight)
 			break;
 		else if(ImageCur >= ImageStartAt)
 		{
-			ImageCur += 15.0f;
+			CurrentY += 15.0f;
 			ToolBox.HSplitTop(15.0f, &Slot, &ToolBox);
 			if(e == 0)
 				UI()->DoLabel(&Slot, "Embedded", 12.0f, CUI::ALIGN_CENTER);
 			else
 				UI()->DoLabel(&Slot, "External", 12.0f, CUI::ALIGN_CENTER);
 		}
+		ImageCur += 15.0f;
 
 		for(int i = 0; i < m_Map.m_lImages.size(); i++)
 		{
@@ -2914,11 +2917,15 @@ void CEditor::RenderImages(CUIRect ToolBox, CUIRect ToolBar, CUIRect View)
 				continue;
 			}
 
-			if(ImageCur >= ToolBox.h)
+			if(CurrentY >= ToolBoxHeight)
 				break;
 			else if(ImageCur < ImageStartAt)
+			{
+				ImageCur += 14.0f;
 				continue;
+			}
 			ImageCur += 14.0f;
+			CurrentY += 14.0f;
 
 			char aBuf[128];
 			str_copy(aBuf, m_Map.m_lImages[i]->m_aName, sizeof(aBuf));
@@ -2984,6 +2991,7 @@ void CEditor::RenderImages(CUIRect ToolBox, CUIRect ToolBar, CUIRect View)
 		// separator
 		ToolBox.HSplitTop(5.0f, &Slot, &ToolBox);
 		ImageCur += 5.0f;
+		CurrentY += 5.0f;
 		IGraphics::CLineItem LineItem(Slot.x, Slot.y+Slot.h/2, Slot.x+Slot.w, Slot.y+Slot.h/2);
 		Graphics()->TextureClear();
 		Graphics()->LinesBegin();
@@ -2991,7 +2999,7 @@ void CEditor::RenderImages(CUIRect ToolBox, CUIRect ToolBar, CUIRect View)
 		Graphics()->LinesEnd();
 	}
 
-	if(ImageCur >= ToolBox.h)
+	if(CurrentY >= ToolBoxHeight)
 		return;
 
 	CUIRect Slot;
