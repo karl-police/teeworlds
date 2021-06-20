@@ -2860,7 +2860,7 @@ void CEditor::RenderImages(CUIRect ToolBox, CUIRect ToolBar, CUIRect View)
 {
 	static int s_ScrollBar = 0;
 	static float s_ScrollValue = 0;
-	float ImagesHeight = 30.0f + 14.0f * m_Map.m_lImages.size() + 10.0f + 17.0f;
+	float ImagesHeight = 30.0f + 14.0f * m_Map.m_lImages.size() + 27.0f;
 	float ScrollDifference = ImagesHeight - ToolBox.h;
 
 	if(ImagesHeight > ToolBox.h)	// Do we even need a scrollbar?
@@ -2888,25 +2888,23 @@ void CEditor::RenderImages(CUIRect ToolBox, CUIRect ToolBar, CUIRect View)
 	if(ImageStartAt < 0.0f)
 		ImageStartAt = 0.0f;
 
-	float ImageStopAt = ImagesHeight - ScrollDifference * (1 - s_ScrollValue);
 	float ImageCur = 0.0f;
 
 	for(int e = 0; e < 2; e++) // two passes, first embedded, then external
 	{
 		CUIRect Slot;
 
-		if(ImageCur > ImageStopAt)
+		if(ImageCur >= ToolBox.h)
 			break;
 		else if(ImageCur >= ImageStartAt)
 		{
-
+			ImageCur += 15.0f;
 			ToolBox.HSplitTop(15.0f, &Slot, &ToolBox);
 			if(e == 0)
 				UI()->DoLabel(&Slot, "Embedded", 12.0f, CUI::ALIGN_CENTER);
 			else
 				UI()->DoLabel(&Slot, "External", 12.0f, CUI::ALIGN_CENTER);
 		}
-		ImageCur += 15.0f;
 
 		for(int i = 0; i < m_Map.m_lImages.size(); i++)
 		{
@@ -2916,13 +2914,10 @@ void CEditor::RenderImages(CUIRect ToolBox, CUIRect ToolBar, CUIRect View)
 				continue;
 			}
 
-			if(ImageCur > ImageStopAt)
+			if(ImageCur >= ToolBox.h)
 				break;
 			else if(ImageCur < ImageStartAt)
-			{
-				ImageCur += 14.0f;
 				continue;
-			}
 			ImageCur += 14.0f;
 
 			char aBuf[128];
@@ -2996,7 +2991,7 @@ void CEditor::RenderImages(CUIRect ToolBox, CUIRect ToolBar, CUIRect View)
 		Graphics()->LinesEnd();
 	}
 
-	if(ImageCur > ImageStopAt)
+	if(ImageCur >= ToolBox.h)
 		return;
 
 	CUIRect Slot;
