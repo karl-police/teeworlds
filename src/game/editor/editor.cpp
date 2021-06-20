@@ -2996,7 +2996,7 @@ void CEditor::RenderImages(CUIRect ToolBox, CUIRect ToolBar, CUIRect View)
 		Graphics()->LinesEnd();
 	}
 
-	if(ImageCur + 17.0f > ImageStopAt)
+	if(ImageCur > ImageStopAt)
 		return;
 
 	CUIRect Slot;
