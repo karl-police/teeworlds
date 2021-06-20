@@ -2896,7 +2896,7 @@ void CEditor::RenderImages(CUIRect ToolBox, CUIRect ToolBar, CUIRect View)
 	{
 		CUIRect Slot;
 
-		if(CurrentY >= ToolBoxHeight)
+		if(CurrentY + 15.0f >= ToolBoxHeight)
 			break;
 		else if(ImageCur >= ImageStartAt)
 		{
@@ -2917,7 +2917,7 @@ void CEditor::RenderImages(CUIRect ToolBox, CUIRect ToolBar, CUIRect View)
 				continue;
 			}
 
-			if(CurrentY >= ToolBoxHeight)
+			if(CurrentY + 14.0f >= ToolBoxHeight)
 				break;
 			else if(ImageCur < ImageStartAt)
 			{
@@ -2987,6 +2987,9 @@ void CEditor::RenderImages(CUIRect ToolBox, CUIRect ToolBar, CUIRect View)
 				Graphics()->WrapNormal();
 			}
 		}
+		
+		if(CurrentY + 5.0f >= ToolBoxHeight)
+			return;
 
 		// separator
 		ToolBox.HSplitTop(5.0f, &Slot, &ToolBox);
@@ -2999,7 +3002,7 @@ void CEditor::RenderImages(CUIRect ToolBox, CUIRect ToolBar, CUIRect View)
 		Graphics()->LinesEnd();
 	}
 
-	if(CurrentY >= ToolBoxHeight)
+	if(CurrentY + 12.0f >= ToolBoxHeight)
 		return;
 
 	CUIRect Slot;
