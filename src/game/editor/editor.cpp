@@ -2909,6 +2909,7 @@ void CEditor::RenderImages(CUIRect ToolBox, CUIRect ToolBar, CUIRect View)
 		}
 		ImageCur += 15.0f;
 
+		bool DrewAllImages = true;
 		for(int i = 0; i < m_Map.m_lImages.size(); i++)
 		{
 			if((e && !m_Map.m_lImages[i]->m_External) ||
@@ -2917,8 +2918,10 @@ void CEditor::RenderImages(CUIRect ToolBox, CUIRect ToolBar, CUIRect View)
 				continue;
 			}
 
-			if(CurrentY + 14.0f >= ToolBoxHeight)
+			if(CurrentY + 14.0f >= ToolBoxHeight) {
+				DrewAllImages = false;
 				break;
+			}
 			else if(ImageCur < ImageStartAt)
 			{
 				ImageCur += 14.0f;
@@ -2988,7 +2991,7 @@ void CEditor::RenderImages(CUIRect ToolBox, CUIRect ToolBar, CUIRect View)
 			}
 		}
 		
-		if(CurrentY + 5.0f >= ToolBoxHeight)
+		if(!DrewAllImages || CurrentY + 5.0f >= ToolBoxHeight)
 			return;
 
 		// separator
